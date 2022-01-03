@@ -349,10 +349,10 @@
             <a href="#other-routes" class="toc-h1 toc-link" data-title="Other routes">Other routes</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-relations" class="toc-h2 toc-link" data-title="Get relations">Get relations</a>
+                    <a href="#team-relations" class="toc-h2 toc-link" data-title="Team relations">Team relations</a>
                   </li>
                   <li>
-                    <a href="#get-conflics" class="toc-h2 toc-link" data-title="Get conflics">Get conflics</a>
+                    <a href="#team-conflicts" class="toc-h2 toc-link" data-title="Team conflicts">Team conflicts</a>
                   </li>
                   <li>
                     <a href="#list-all-soft-skills" class="toc-h2 toc-link" data-title="List All Soft Skills">List All Soft Skills</a>
@@ -590,7 +590,7 @@ You must replace <code>YOUR_API_KEY</code> with your personal API key.
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span> <span class="mi">3333</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"https://api.trimoji.fr"</span><span class="p">)</span>
 <span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
     <span class="s">"token"</span><span class="p">:</span> <span class="s">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span>
     <span class="s">"questions"</span><span class="p">:</span> <span class="p">[</span>
@@ -1004,7 +1004,7 @@ You must replace <code>YOUR_API_KEY</code> with your personal API key.
 <p><code>GET /v1/assessment/list</code></p>
 <h3 id='description-4'>Description</h3>
 <p>This endpoint returns an Array of all assessments for a company. It returns for each test, its token, type, personality summary and trimoji as well as the feedbacks for the softskills and trimoji. </p>
-<h1 id='other-routes'>Other routes</h1><h2 id='get-relations'>Get relations</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<h1 id='other-routes'>Other routes</h1><h2 id='team-relations'>Team relations</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">01d35a66-1a01-4aae-9464-d5f9870c7a18</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">team</span><span class="dl">"</span><span class="p">:[</span><span class="dl">"</span><span class="s2">01b25826-f9f5-4153-be19-64bfefc34697</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01376043-ec63-4128-8cfe-2afe6ab37ece</span><span class="dl">"</span><span class="p">]});</span>
 
 <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
@@ -1101,7 +1101,7 @@ You must replace <code>YOUR_API_KEY</code> with your personal API key.
 </tbody></table>
 <h3 id='description-5'>Description</h3>
 <p>With this endpoint, you can check the relation type between two or more profiles. By sending the profile <code>token</code> of reference and an array of profile <code>token</code> to compare. This is useful in the case where you want to create the best team or predict possible conflicts between people.</p>
-<h2 id='get-conflics'>Get conflics</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<h2 id='team-conflicts'>Team conflicts</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="dl">"</span><span class="s2">team</span><span class="dl">"</span><span class="p">:[</span><span class="dl">"</span><span class="s2">01d35a66-1a01-4aae-9464-d5f9870c7a18</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01b25826-f9f5-4153-be19-64bfefc34697</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01376043-ec63-4128-8cfe-2afe6ab37ece</span><span class="dl">"</span><span class="p">]});</span>
 
 <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
