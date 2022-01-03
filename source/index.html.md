@@ -6,8 +6,8 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - python
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+  - <a href='mailto:dev@teambuildr.fr'>Sign Up for a Developer Key</a>
+  - <a href='//trimoji.fr'>Visit Trimoji.fr</a>
 
 includes:
   - errors
@@ -18,7 +18,7 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Documentation for the Kittn API
+    content: Trimoji API Documentation
 ---
 
 # Introduction
