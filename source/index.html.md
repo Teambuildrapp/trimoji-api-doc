@@ -265,7 +265,7 @@ axios(config)
 import http.client
 import json
 
-conn = http.client.HTTPSConnection("localhost", 3333)
+conn = http.client.HTTPSConnection("https://api.trimoji.fr")
 payload = json.dumps({
     "token": "87a2ca5d-3025-43d6-9d05-b2831b2d1256",
     "questions": [
@@ -660,7 +660,7 @@ This endpoint returns an Array of all assessments for a company. It returns for 
 
 # Other routes
 
-## Get relations 
+## Team relations
 
 ```javascript
 var axios = require('axios');
@@ -756,7 +756,7 @@ team | Array<String> | The tokens of each members of the teams.
 
 With this endpoint, you can check the relation type between two or more profiles. By sending the profile `token` of reference and an array of profile `token` to compare. This is useful in the case where you want to create the best team or predict possible conflicts between people.
 
-## Get conflics 
+## Team conflicts
 
 ```javascript
 var axios = require('axios');
