@@ -9,7 +9,7 @@
             name="description"
             content="Documentation for the Kittn API"
         >
-    <title>API Reference</title>
+    <title>Trimoji API Documentation</title>
 
     <style media="screen">
       .highlight table td { padding: 5px; }
@@ -295,7 +295,7 @@
     </script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;javascript&quot;,&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -305,10 +305,8 @@
     <div class="toc-wrapper">
       <img src="images/logo-1e815a84.png" class="logo" alt="" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
               <a href="#" data-language-name="javascript">javascript</a>
+              <a href="#" data-language-name="python">python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -322,16 +320,45 @@
             <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#response-class" class="toc-h1 toc-link" data-title="Response class">Response class</a>
+          </li>
+          <li>
+            <a href="#assessment" class="toc-h1 toc-link" data-title="Assessment">Assessment</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Get All Kittens">Get All Kittens</a>
+                    <a href="#initialize-an-assessment-test" class="toc-h2 toc-link" data-title="Initialize an assessment test">Initialize an assessment test</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Get a Specific Kitten">Get a Specific Kitten</a>
+                    <a href="#store-test-answers" class="toc-h2 toc-link" data-title="Store Test Answers">Store Test Answers</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Delete a Specific Kitten">Delete a Specific Kitten</a>
+                    <a href="#store-soft-skills-feedbacks" class="toc-h2 toc-link" data-title="Store Soft Skills Feedbacks">Store Soft Skills Feedbacks</a>
+                  </li>
+                  <li>
+                    <a href="#store-trimoji-feedbacks" class="toc-h2 toc-link" data-title="Store Trimoji Feedbacks">Store Trimoji Feedbacks</a>
+                  </li>
+                  <li>
+                    <a href="#get-profile" class="toc-h2 toc-link" data-title="Get Profile">Get Profile</a>
+                  </li>
+                  <li>
+                    <a href="#list-all-assessments" class="toc-h2 toc-link" data-title="List all assessments">List all assessments</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#other-routes" class="toc-h1 toc-link" data-title="Other routes">Other routes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-relations" class="toc-h2 toc-link" data-title="Get relations">Get relations</a>
+                  </li>
+                  <li>
+                    <a href="#get-conflics" class="toc-h2 toc-link" data-title="Get conflics">Get conflics</a>
+                  </li>
+                  <li>
+                    <a href="#list-all-soft-skills" class="toc-h2 toc-link" data-title="List All Soft Skills">List All Soft Skills</a>
+                  </li>
+                  <li>
+                    <a href="#get-all-ideal-jobs" class="toc-h2 toc-link" data-title="Get All Ideal Jobs">Get All Ideal Jobs</a>
                   </li>
               </ul>
           </li>
@@ -348,190 +375,916 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>Welcome to the Trimoji API documentation ! Our API allows you to integrate our psychometric assessment test within your own project in a very simple way.</p>
 
-<p>We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>This API is currently in Version 1, we&#39;re often shipping updates to improve performance or provide more useful endpoints.</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/slatedocs/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
+<p>We&#39;re not creating breakchange within the same major version, breakchanges will only occur in major update (V1 -&gt; V2 -&gt; V3)</p>
+
+<p>Feel free to create issues on the <a href="https://github.com/Teambuildrapp/trimoji-api-doc">GitHub</a> of this doc if you&#39;re facing any problem.</p>
 <h1 id='authentication'>Authentication</h1>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Here is an example of request using the TOKEN:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+  <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">});</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/init</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/init"</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
+  <span class="s">"type"</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
 <blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>Make sure to replace <code>YOUR_API_KEY</code> with your API key.</p>
 </blockquote>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>The Trimoji API uses a JWT auth token to identify you. Contact our IT department at <a href="mailto:dev@teambuildr.fr">dev@teambuildr.fr</a> to get your API key.</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>Your subscription to our API includes a defined amount of monthly rate. This rate is only affected by an assessment being processed (<code>POST /v1/assessment/save</code>). We&#39;re offering unlimited rate for everything else. All request must go through the <code>HTTPS</code> protocol.</p>
 
-<p><code>Authorization: meowmeowmeow</code></p>
+<p>Our API expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+
+<p><code>Authorization: YOUR_API_KEY</code></p>
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>YOUR_API_KEY</code> with your personal API key.
 </aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">();</span>
-</code></pre></div>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span> <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre></div>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+<h1 id='response-class'>Response class</h1><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"success"</span><span class="p">:</span><span class="w"> </span><span class="err">Boolean</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="err">String</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="err">Object</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint retrieves a specific kitten.</p>
+<p>The API response is returned in this object format.</p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
+<p>If the request fails, <code>success</code> will be <code>false</code> and <code>message</code> will contain the error message.</p>
+
+<p>If the request succeeds, <code>success</code> will be <code>true</code> and <code>message</code> will be &quot;Success&quot;.</p>
+
+<p>Datas are returned within the <code>data</code> object.</p>
+<h1 id='assessment'>Assessment</h1><h2 id='initialize-an-assessment-test'>Initialize an assessment test</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+  <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/init</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/init"</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
+  <span class="s">"type"</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div>
+<blockquote>
+<p>The API returns the token of the assessment and the questions to be answered.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ec30645a-9625-4fcc-be9b-c8a296f9c540"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"questions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Au théâtre, vous vous voyez plutôt sur scène que dans les coulisses"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"In the theater, you see yourself more on stage than behind the scenes."</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"En el teatro, te ves más en el escenario que detrás de escena"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Les gens peuvent rarement vous contrarier."</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"People can rarely upset you."</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"question_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"La gente rara vez puede molestarte."</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="err">//...</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><code>POST /v1/assessment/init</code></p>
+<h3 id='route-parameters'>Route parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>type</td>
+<td>Number</td>
+<td>Correspond to the test duration. 0 for the 3 mins test, 1 for 15 mins test.</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h3 id='description'>Description</h3>
+<p>This endpoint represents the first step of the assessment. It returns the <code>token</code> of the assessment and the questions to be answered. The <code>token</code> is used to identify the assessment in the next steps and to save the answers. The questions are returned in the order they should be answered. The questions are returned as an array of objects. Each object contains the <code>question id</code> and the question in fr, en and es.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>On the frontend, you need to render each question individually. The answer to theses question are in the form of a Likert scale (1-5) from disagree (1) to agree (5). The colors of each buttons needs to be the same to avoid any cognitive biases. </p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="p">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="n">kittens</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span> <span class="se">\</span>
-  <span class="nt">-X</span> DELETE <span class="se">\</span>
-  <span class="nt">-H</span> <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">kittn</span><span class="dl">'</span><span class="p">);</span>
+<p><a href="https://statics.teambuildr.fr/docs/trimoji/apidoc/likerttrimoji.png">Please, click here to see a perfect example of frontend rendering</a>. </p>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="dl">'</span><span class="s1">meowmeowmeow</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<p>When a user clicks on one of the answers (one of the five button), you need to store the answer in an array of objects. Each object contains the question id and the answer.</p>
+
+<p><code>userAnswers = [
+  {
+    &quot;id&quot;: 3,
+    &quot;value&quot;: 1
+  },
+  {
+    &quot;id&quot;: 20,
+    &quot;value&quot;: 4
+  },
+  ...
+]</code></p>
+
+<p>This is the array you will send to the endpoint in charge of saving the answers and processing the personnality assessment.</p>
+<h3 id='example'>Example</h3>
+<p>You request <code>/v1/assessment/init</code> which returns a UUIDV4 <code>token</code> (<code>ec30645a-9625-4fcc-be9b-c8a296xxxxxx</code>) and an array of questions.</p>
+
+<p>You then display the questions in the frontend.</p>
+
+<p>The user clicks on the second answer (corresponding to the value <code>2</code>) of the question with id <code>4</code>.</p>
+
+<p>You then push the answer to the array
+<code>myAnswerArrayWithWhateverName = [
+  {
+    &quot;id&quot;: 4,
+    &quot;value&quot;: 2
+  },
+  ...
+]</code> and so on.</p>
+<h2 id='store-test-answers'>Store Test Answers</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code>
+<span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+    <span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">87a2ca5d-3025-43d6-9d05-b2831b2d1256</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">answers</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">},</span>
+        <span class="c1">// ...</span>
+    <span class="p">]</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/save</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">http.client</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">http</span><span class="p">.</span><span class="n">client</span><span class="p">.</span><span class="n">HTTPSConnection</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span> <span class="mi">3333</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s">"token"</span><span class="p">:</span> <span class="s">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span>
+    <span class="s">"questions"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"id"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"value"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"id"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s">"value"</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">},</span>
+        <span class="c1">#...
+</span>    <span class="p">]</span>
+<span class="p">})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+<span class="n">conn</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="s">"/v1/assessment/save"</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="n">getresponse</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">))</span>
+
+</code></pre></div>
+<p><code>POST /v1/assessment/save</code></p>
+<h3 id='route-parameters-2'>Route parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>String</td>
+<td>The token ID of the assessment test</td>
+</tr>
+<tr>
+<td>answers</td>
+<td>Array</td>
+<td>Array of object. For each answer you need to provide the <code>id</code> of the question and the <code>value</code> of the answer as integers.</td>
+</tr>
+</tbody></table>
+<h3 id='description-2'>Description</h3>
+<p>This endpoint is used to store the answers of the user and to trigger the calculation of the personality. This needs to be done only once, we recommend creating a new assessment each time someone wants to take the test, or if you want a user to take the test multiple times.</p>
+
+<aside class="warning">You can store more answers if you want, but you need to make sure that the answers are not already stored, and we can't guarantee that the personality will be correct if you do so. That's why we don't provide an endpoint to only load questions and we're forcing you to get the questions by creating a new assessment.</aside>
+<h2 id='store-soft-skills-feedbacks'>Store Soft Skills Feedbacks</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+        <span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">87a2ca5d-3025-43d6-9d05-b2831b2d1256</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">isGlobal</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">quality_id</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/feedback/softskills</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/feedback/softskills"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
+      <span class="s">"token"</span><span class="p">:</span> <span class="s">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span>
+      <span class="s">"value"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+      <span class="s">"isGlobal"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s">"quality_id"</span><span class="p">:</span> <span class="mi">4</span>
+    <span class="p">})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+
+</code></pre></div><h3 id='route-parameters-3'>Route parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>String</td>
+<td>The token of the assessment</td>
+</tr>
+<tr>
+<td>value</td>
+<td>Integer</td>
+<td>Answer between 1 and 5.</td>
+</tr>
+<tr>
+<td>isGlobal</td>
+<td>Integer</td>
+<td>1 if the feebacks concerns all qualities of a test, 0 if it concerns just one</td>
+</tr>
+<tr>
+<td>quality_id</td>
+<td>Integer</td>
+<td><code>id</code> of the quality if the feedbacks is for one quality</td>
+</tr>
+</tbody></table>
+<h2 id='store-trimoji-feedbacks'>Store Trimoji Feedbacks</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+      <span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">87a2ca5d-3025-43d6-9d05-b2831b2d1256</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">global_value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">structure_value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">motivation_value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">intensity_value</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/feedback/trimoji</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/feedback/trimoji"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">"token"</span><span class="p">:</span><span class="s">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="s">"global_value"</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span><span class="s">"structure_value"</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="s">"motivation_value"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="s">"intensity_value"</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div><h3 id='route-parameters-4'>Route parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>String</td>
+<td>The token of the assessment</td>
+</tr>
+<tr>
+<td>global_value</td>
+<td>Integer</td>
+<td>Feedback answer for the all trimoji between 1 and 5.</td>
+</tr>
+<tr>
+<td>structure_value</td>
+<td>Integer</td>
+<td>Feedback answer for the first emoji between 1 and 5.</td>
+</tr>
+<tr>
+<td>motivation_value</td>
+<td>Integer</td>
+<td>Feedback answer for the second emoji between 1 and 5.</td>
+</tr>
+<tr>
+<td>intensity_value</td>
+<td>Integer</td>
+<td>Feedback answer for the third emoji between 1 and 5.</td>
+</tr>
+</tbody></table>
+<h2 id='get-profile'>Get Profile</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span>
+    <span class="p">{</span><span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">87a2ca5d-3025-43d6-9d05-b2831b2d1256</span><span class="dl">"</span><span class="p">}</span>
+  <span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/get</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/get"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span>
+  <span class="p">{</span><span class="s">"token"</span><span class="p">:</span><span class="s">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>The API returns the full profile for a given token.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"envStructure"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"envMotivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🤝"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"envIntensity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"⏰"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏🤝⏰"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"trimojiFeedback"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4d2fbeb5-62c5-45c0-97e7-2c3f4f1aeed8"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"test_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"global_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"structure_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"motivation_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"intensity_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"softskills"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"softskills"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Déterminé(e) et passionné(e)"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Determined and passionate"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Decidido y apasionado"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"isQuality"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"softskillsFeedback"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5fa1acf6-f067-4d97-bce2-4f3a28fd2c52"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"test_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"quality_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"isGlobal"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"personality"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Créateur ouvert d’esprit"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open Minded Creative"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"mantra"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Capacité à évaluer et à organiser des concepts. Les responsabilités reviennent aux meilleurs cerveaux"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"mantra_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ability to evaluate and organize concepts. Responsibilities go to the best brains."</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"descriptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="err">//</span><span class="w"> </span><span class="err">too</span><span class="w"> </span><span class="err">long</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"environments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Travailler seul ou en petits groupes avec des gestionnaires simples et réalistes"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Self directed work or in small groups with simple and realistic managers"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Trabaje solo o en grupos pequeños con gerentes simples y realistas"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isBeneficial"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Travail en équipe seulement"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Teamwork only"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Solo trabajo en equipo"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isBeneficial"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="nl">"positions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">56</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Chefs de projet"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Project managers"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jefes de proyecto"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><code>GET /v1/assessment/get</code></p>
+<h3 id='route-parameters-5'>Route parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>String</td>
+<td>The token of the assessment you want to get the profile for.</td>
+</tr>
+</tbody></table>
+<h3 id='description-3'>Description</h3>
+<p>This endpoint returns the full personnality profile of a given assessment token. This profile is the Trimoji psychometric test result, this is basicly the personnality of the user.</p>
+
+<aside class="warning">The profile is only available once you have saved the assessment answers of the user. (see the <code>Store Test Answers</code> section for more information)</aside>
+
+<p>This profile contains the Trimoji, the softskills, the main personality traits, the best and worst working environments, the most common job position for this personnality, the descriptions as manager, colleague, etc. </p>
+
+<p>The API also returns the feedbacks of the user for the Trimoji and softskills if there is one or more. The feedbacks are given by the user, you can refer to the <a href="#store-soft-skills-feedbacks">softskills feedback section</a> and <a href="#store-trimoji-feedbacks">trimoji feedback section</a> for more informations.</p>
+
+<p>Check the <a href="https://trimoji.fr/">Trimoji website</a> for more informations about the Trimoji profile.</p>
+
+<p>NOTE : We recommend storing the API response in your database to avoid the need to call the API every time you need the profile of your user.</p>
+<h2 id='list-all-assessments'>List all assessments</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">get</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/assessment/list</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/assessment/list"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
 </code></pre></div>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w"> </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c9e93efd-fbe1-4c2c-9ee4-aec490f3bcd4"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"testId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-12-30T14:09:25.000Z"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"personality"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Créateur ouvert d’esprit"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open Minded Creative"</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="nl">"envStructure"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"envMotivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🤝"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"envIntensity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"⏰"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏🤝⏰"</span><span class="p">,</span><span class="w">
+              </span><span class="nl">"trimojiFeedback"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4d2fbeb5-62c5-45c0-97e7-2c3f4f1aeed8"</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"test_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"global_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"structure_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"motivation_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"intensity_value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-12-30T14:13:52.000Z"</span><span class="p">,</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="nl">"softskillsFeedback"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5fa1acf6-f067-4d97-bce2-4f3a28fd2c52"</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"test_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"87a2ca5d-3025-43d6-9d05-b2831b2d1256"</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"quality_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"isGlobal"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                  </span><span class="nl">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-12-30T14:13:46.000Z"</span><span class="p">,</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8183a739-24db-46c6-b3dd-7ded17e13d83"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"testId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"945343b5-401e-4ee4-b8b7-e08b34ac5481"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-12-30T13:49:08.000Z"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"personality"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Créateur ouvert d’esprit"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open Minded Creative"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"envStructure"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"envMotivation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🤝"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"envIntensity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"⏰"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"trimoji"</span><span class="p">:</span><span class="w"> </span><span class="s2">"🃏🤝⏰"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"trimojiFeedback"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="nl">"softskillsFeedback"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<p><code>GET /v1/assessment/list</code></p>
+<h3 id='description-4'>Description</h3>
+<p>This endpoint returns an Array of all assessments for a company. It returns for each test, its token, type, personality summary and trimoji as well as the feedbacks for the softskills and trimoji. </p>
+<h1 id='other-routes'>Other routes</h1><h2 id='get-relations'>Get relations</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="dl">"</span><span class="s2">token</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">01d35a66-1a01-4aae-9464-d5f9870c7a18</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">team</span><span class="dl">"</span><span class="p">:[</span><span class="dl">"</span><span class="s2">01b25826-f9f5-4153-be19-64bfefc34697</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01376043-ec63-4128-8cfe-2afe6ab37ece</span><span class="dl">"</span><span class="p">]});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/relations</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/relations"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="s">"{'token':'01d35a66-1a01-4aae-9464-d5f9870c7a18','team':['01b25826-f9f5-4153-be19-64bfefc34697','01376043-ec63-4128-8cfe-2afe6ab37ece']}"</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w"> </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01376043-ec63-4128-8cfe-2afe6ab37ece"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"relationCaracteristics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Etre eux-mêmes l'un avec l'autre sans provoquer d'incompréhensions"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Be themselves with each other without causing misunderstandings"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"is_positive"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Compréhension intuitive et correcte de l'autre et sont rarement surpris par ce que celui-ci dit ou fait"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Intuitive and correct understanding of others and are rarely surprised by what they say or do"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"is_positive"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Miroir"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Miroir"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mi">70</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ces partenaires peuvent être eux-mêmes l'un avec l'autre sans provoquer d'incompréhensions. Ils ont une compréhension intuitive et correcte de l'autre et sont rarement surpris par ce que celui-ci dit ou fait. C'est pour cette raison qu'ils n'argumentent que très rarement. Ils ont toujours des choses à dire sur un même sujet et arrivent aisément à un consensus tout en mettant l'accent sur certaines choses, ce qui crée un effet révisionniste.</span><span class="se">\n\n</span><span class="s2"> Cette relation est fortement orientée sur la communication verbale, avec des partenaires discutant de sujets relatifs à leurs hobbys (et évitant les autres), révisant et ajustant ensemble leurs points de vue. Ces partenaires peuvent avoir tendance à se fatiguer de cet aspect discussions incessantes qui est la nature même de la relation, et peuvent vouloir se séparer pour travailler et trouver du repos. Ces partenaires s'animent vivement dès lors que quelqu'un d'autre leur demande lequel est le double de l'autre et lequel des deux stimule l'autre."</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"These partners can be themselves with each other without causing misunderstandings. They have an intuitive and correct understanding of the other and are seldom surprised by what this one says or does. It is for this reason that they very rarely argue. They always have things to say on the same subject and easily come to a consensus while emphasizing certain things, which creates a revisionist effect.  N  n This relationship is strongly oriented towards verbal communication, with partners discussing topics related to their hobbies (and avoiding others), reviewing and adjusting their views together. These partners may tend to get tired of this endless arguing aspect that is the very nature of the relationship, and may want to go their separate ways in order to work and find rest. These partners get excited when someone else asks them which is the double of the other and which of the two stimulates the other."</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01b25826-f9f5-4153-be19-64bfefc34697"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"relationCaracteristics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Un(e) partenaire (le récepteur) trouve qu'il est en permanence en train d'essayer de résoudre les problèmes de l'autre"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"One partner (the receiver) finds that he or she is constantly trying to solve the other's problems"</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="nl">"is_positive"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Requête Recepteur "</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"type_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Receiver Request "</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"score"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Relation asymétrique de type requête en mode émetteur/récepteur. Un partenaire (le récepteur) trouve qu'il est en permanence en train d'essayer de résoudre les problèmes de l'autre (l'émetteur) mais est trop impliqué émotionnellement dans la vie de l'autre partenaire - toujours en attente d'une récompense de la part de l'émetteur.</span><span class="se">\n\n</span><span class="s2"> L'émetteur, de son côté, ignore largement tout cela et se demande pourquoi le récepteur est si dépendant et si sensible aux choses qu'il lui dit."</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"description_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asymmetric query type relationship in sender / receiver mode. One partner (the receiver) finds that he is constantly trying to solve the problems of the other (the sender) but is too emotionally involved in the life of the other partner - still waiting for a reward from the sender. </span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> The sender, on the other hand, largely ignores all of this and wonders why the receiver is so dependent and so sensitive to things that 'he tells him."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p><code>POST /v1/relations</code></p>
+<h3 id='route-parameters-6'>Route parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>token</td>
+<td>String</td>
+<td>The token of the profile to be compared with the team.</td>
+</tr>
+<tr>
+<td>team</td>
+<td>Array<String></td>
+<td>The tokens of each members of the teams.</td>
 </tr>
 </tbody></table>
+<h3 id='description-5'>Description</h3>
+<p>With this endpoint, you can check the relation type between two or more profiles. By sending the profile <code>token</code> of reference and an array of profile <code>token</code> to compare. This is useful in the case where you want to create the best team or predict possible conflicts between people.</p>
+<h2 id='get-conflics'>Get conflics</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="dl">"</span><span class="s2">team</span><span class="dl">"</span><span class="p">:[</span><span class="dl">"</span><span class="s2">01d35a66-1a01-4aae-9464-d5f9870c7a18</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01b25826-f9f5-4153-be19-64bfefc34697</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">01376043-ec63-4128-8cfe-2afe6ab37ece</span><span class="dl">"</span><span class="p">]});</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/conflicts</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> 
+    <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/conflicts"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span><span class="s">"team"</span><span class="p">:[</span><span class="s">"01d35a66-1a01-4aae-9464-d5f9870c7a18"</span><span class="p">,</span><span class="s">"01b25826-f9f5-4153-be19-64bfefc34697"</span><span class="p">,</span><span class="s">"01376043-ec63-4128-8cfe-2afe6ab37ece"</span><span class="p">]})</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+  <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div>
+<blockquote>
+<p>The API returns the potential conflicts in a team. </p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w"> </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01376043-ec63-4128-8cfe-2afe6ab37ece"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflict"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflictCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01b25826-f9f5-4153-be19-64bfefc34697"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflictCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01d35a66-1a01-4aae-9464-d5f9870c7a18"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"conflictCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p><code>POST /v1/conflicts</code></p>
+<h3 id='route-parameters-7'>Route parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>team</td>
+<td>Array</td>
+<td>Array of assessment token</td>
+</tr>
+</tbody></table>
+<h3 id='description-6'>Description</h3>
+<p>This endpoint will return the number of conflicts between each member of the sent team. This is useful to predict the number of conflicts between people in a team or a work group.</p>
+
+<p>NOTE : This informations is the most useful on small teams. It&#39;s possible to have teams with 0 conflicts, it&#39;s also possible to have teams with only one member having conflicts with everyone else. </p>
+<h2 id='list-all-soft-skills'>List All Soft Skills</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">get</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/v1/qualities/list</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/qualities/list"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div>
+<blockquote>
+<p>The API returns all the soft skills available in our database.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w"> </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"qualities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Propension à la tolérance"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tolerant"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Propensión a la tolerancia"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isQuality"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fiable"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Reliable"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"De confianza"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isQuality"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">82</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rationnel(le)"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rational"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Racional"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isQuality"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">83</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spontané(e)"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spontaneous"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Espontáneo"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"isQuality"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+            </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><code>GET /v1/qualities/list</code></p>
+<h3 id='description-7'>Description</h3>
+<p>Returns all the soft skills available in our database. Each assessment profiles has specific soft skills linked to them.</p>
+<h2 id='get-all-ideal-jobs'>Get All Ideal Jobs</h2><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">var</span> <span class="nx">axios</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">get</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://api.trimoji.fr/idealjob/list</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> 
+    <span class="dl">'</span><span class="s1">Authorization</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span>
+  <span class="p">},</span>
+  <span class="na">data</span> <span class="p">:</span> <span class="nx">data</span>
+<span class="p">};</span>
+
+<span class="nx">axios</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">"https://api.trimoji.fr/v1/idealjob/list"</span>
+
+<span class="n">payload</span><span class="o">=</span><span class="p">{}</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'Authorization'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span>
+<span class="p">}</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">request</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+</code></pre></div>
+<blockquote>
+<p>The API returns all the ideal jobs available in our database.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="w">  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"positions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Acteur"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Actor"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"name_es"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Actor"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="err">//</span><span class="w"> </span><span class="err">...</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><code>GET /v1/idealjob/list</code></p>
+<h3 id='description-8'>Description</h3>
+<p>Returns all the ideal jobs available in our database. Each assessment profiles has specific ideal jobs linked to them.</p>
 <h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The Trimoji API uses the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -549,31 +1302,15 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
+<td>Forbidden -- The ressource you requested does not belong to your API_KEY.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
+<td>Not Found -- The specified ressource could not be found.</td>
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+<td>Too Many Requests -- You reached your monthly limit of assessments.</td>
 </tr>
 <tr>
 <td>500</td>
@@ -588,10 +1325,8 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
                 <a href="#" data-language-name="javascript">javascript</a>
+                <a href="#" data-language-name="python">python</a>
           </div>
       </div>
     </div>
