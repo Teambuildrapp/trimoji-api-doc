@@ -360,7 +360,7 @@ print(response.text)
 
 Parameter | Type | Description
 --------- | ------- | -----------
-token | String | The token of the profile who give the feedbacks
+token | String | The token of the assessment
 value | Integer | Answer between 1 and 5. 
 isGlobal | Integer | 1 if the feebacks concerns all qualities of a test, 0 if it concerns just one
 quality_id | Integer | `id` of the quality if the feedbacks is for one quality
@@ -412,7 +412,7 @@ print(response.text)
 
 Parameter | Type | Description
 --------- | ------- | -----------
-token | String | The token of the profile who give the feedbacks
+token | String | The token of the assessment
 global_value | Integer | Feedback answer for the all trimoji between 1 and 5. 
 structure_value | Integer | Feedback answer for the first emoji between 1 and 5.  
 motivation_value | Integer | Feedback answer for the second emoji between 1 and 5. 
@@ -541,7 +541,7 @@ print(response.text)
 
 Parameter | Type | Description
 --------- | ------- | -----------
-token | String | The token of the profile who you want the informations to be returns.
+token | String | The token of the assessment you want to get the profile for.
 
 ### Description
 
@@ -558,9 +558,7 @@ Check the [Trimoji website](https://trimoji.fr/) for more informations about the
 NOTE : We recommend storing the API response in your database to avoid the need to call the API every time you need the profile of your user.
 
 
-# Other routes
-
-## Get all company tests
+## List all assessments
 
 ```javascript
 var axios = require('axios');
@@ -654,7 +652,13 @@ print(response.text)
     ]
 ```
 
-This endpoint returns an Array of the results of all tests for a company. It returns for each test, its token, type, personality and trimoji as well as the the feedbacks for the quality and the trimoji. 
+`GET /v1/assessment/list`
+
+### Description
+
+This endpoint returns an Array of all assessments for a company. It returns for each test, its token, type, personality summary and trimoji as well as the feedbacks for the softskills and trimoji. 
+
+# Other routes
 
 ## Get relations 
 
@@ -711,30 +715,7 @@ print(response.text)
                     "name_es": null,
                     "is_positive": true
                 },
-                {
-                    "name": "Arrivent aisément à un consensus",
-                    "name_en": "Easily reach consensus",
-                    "name_es": null,
-                    "is_positive": true
-                },
-                {
-                    "name": "Cette relation est fortement orientée sur la communication verbale",
-                    "name_en": "This relationship is strongly oriented on verbal communication",
-                    "name_es": null,
-                    "is_positive": true
-                },
-                {
-                    "name": "Potentielles discussions incessantes",
-                    "name_en": "Potential incessant discussions",
-                    "name_es": null,
-                    "is_positive": false
-                },
-                {
-                    "name": "Volonté de se séparer pour travailler et trouver du repos",
-                    "name_en": "Willingness to separate in order to work and find rest",
-                    "name_es": null,
-                    "is_positive": false
-                }
+                // ...
             ],
             "type": "Miroir",
             "type_en": "Miroir",
@@ -751,18 +732,7 @@ print(response.text)
                     "name_es": null,
                     "is_positive": false
                 },
-                {
-                    "name": "Trop impliqué(e) émotionnellement dans la vie de l'autre partenaire",
-                    "name_en": "Too emotionally involved in the life of the other partner",
-                    "name_es": null,
-                    "is_positive": false
-                },
-                {
-                    "name": "Toujours en attente d'une récompense de la part de l'émetteur",
-                    "name_en": "Still waiting for a reward from the issuer",
-                    "name_es": null,
-                    "is_positive": false
-                }
+                // ...
             ],
             "type": "Requête Recepteur ",
             "type_en": "Receiver Request ",
@@ -773,8 +743,7 @@ print(response.text)
     ]
 ```
 
-This endpoint returns an Array of all the relations between a profile and a list of profiles. 
-
+`POST /v1/relations`
 
 ### Route parameters
 
@@ -782,6 +751,10 @@ Parameter | Type | Description
 --------- | ------- | -----------
 token | String | The token of the profile to be compared with the team.
 team | Array<String> | The tokens of each members of the teams.
+
+### Description
+
+With this endpoint, you can check the relation type between two or more profiles. By sending the profile `token` of reference and an array of profile `token` to compare. This is useful in the case where you want to create the best team or predict possible conflicts between people.
 
 ## Get conflics 
 
@@ -842,15 +815,22 @@ print(response.text)
     ]
 ```
 
+`POST /v1/conflicts`
 
 ### Route parameters
 
 Parameter | Type | Description
 --------- | ------- | -----------
-team | Array | Array of the tokens of the member of the team you want to detect the potential conflicts in.
+team | Array | Array of assessment token
+
+### Description
+
+This endpoint will return the number of conflicts between each member of the sent team. This is useful to predict the number of conflicts between people in a team or a work group.
+
+NOTE : This informations is the most useful on small teams. It's possible to have teams with 0 conflicts, it's also possible to have teams with only one member having conflicts with everyone else. 
 
 
-## Get All Soft Skills
+## List All Soft Skills
 
 ```javascript
 var axios = require('axios');
@@ -858,7 +838,7 @@ var data = '';
 
 var config = {
   method: 'get',
-  url: 'https://api.trimoji.fr/v1/tbr/list/qualities',
+  url: 'https://api.trimoji.fr/v1/qualities/list',
   headers: { 
     'Authorization': 'YOUR_API_KEY'
   },
@@ -871,7 +851,7 @@ axios(config)
 ```python
 import requests
 
-url = "https://api.trimoji.fr/v1/tbr/list/qualities"
+url = "https://api.trimoji.fr/v1/qualities/list"
 
 payload={}
 headers = {
@@ -922,6 +902,12 @@ print(response.text)
     }
 ```
 
+`GET /v1/qualities/list`
+
+### Description
+
+Returns all the soft skills available in our database. Each assessment profiles has specific soft skills linked to them.
+
 ## Get All Ideal Jobs
 
 ```javascript
@@ -930,7 +916,7 @@ var data = '';
 
 var config = {
   method: 'get',
-  url: 'https://api.trimoji.fr/v1/tbr/list/idealjob',
+  url: 'https://api.trimoji.fr/idealjob/list',
   headers: { 
     'Authorization': 'YOUR_API_KEY'
   },
@@ -943,7 +929,7 @@ axios(config)
 ```python
 import requests
 
-url = "https://api.trimoji.fr/v1/tbr/list/idealjob"
+url = "https://api.trimoji.fr/v1/idealjob/list"
 
 payload={}
 headers = {
@@ -962,12 +948,6 @@ print(response.text)
   "data": {
         "positions": [
             {
-                "id": 15,
-                "name": "Acteur",
-                "name_en": "Actor",
-                "name_es": "Actor"
-            },
-            {
                 "id": 24,
                 "name": "Acteur",
                 "name_en": "Actor",
@@ -978,124 +958,8 @@ print(response.text)
     }
 ```
 
-## END
+`GET /v1/idealjob/list`
 
+### Description
 
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+Returns all the ideal jobs available in our database. Each assessment profiles has specific ideal jobs linked to them.
